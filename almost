@@ -1,0 +1,184 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int currentTDU;
+double TDUCharge, TDUPerKwh, eflCost;
+int totalMonths;
+string nameOnBill;
+
+
+
+int main()
+
+{
+	
+
+	std::cout << "Please enter name of the person on the bill: \n";
+
+	std::cin >> nameOnBill;
+
+	cout << "How many months worth of data do you want to enter (up to 12): ";
+	
+
+	while (totalMonths <= 0 || totalMonths > 12) {
+		
+
+		cin >> totalMonths;
+
+
+		if (totalMonths <= 0 || totalMonths > 12) {
+			cin.clear();
+			cin.ignore(100000, '\n');
+			cout << "Enter valid number up to 12" << endl;
+
+		}
+
+	}
+
+	do {
+
+		cout << "Please enter a number 1-5 to choose your current TDU provider from the provided list: \n";
+
+		cout << "1. ONCOR ENERGY\n";
+
+		cout << "2. CENTERPOINT ENERGY\n";
+
+		cout << "3. AEP TEXAS CENTRAL\n";
+
+		cout << "4. AEP TEXAS NORTH\n";
+
+		cout << "5. TEXAS - NEW MEXICO POWER\n";
+
+		cin >> currentTDU;
+
+		if (currentTDU <= 0 || currentTDU >= 6)
+		{
+
+			cin.clear();
+			cin.ignore(100000, '\n');
+			cout << "Please select a valid option from the list provided\n " << endl;
+
+		}
+	}
+
+	while (currentTDU <= 0 || currentTDU >= 6);
+
+	int kwh;
+	double TotalTDUCharges;
+
+	int i;
+	i = 1;
+
+	for (i = 1; i <= totalMonths; i++) {
+
+
+
+
+		cout << "Enter your KWH used for month " << i << ": " << endl;
+
+		cin >> kwh;
+
+		cout << "Hello " << nameOnBill << "! "<< "Your current charges for month " << i << " are the following : " << endl;
+
+		if (currentTDU == 1)
+		{
+			TotalTDUCharges = 3.42 + (0.0384470 * kwh);
+		}
+		else if (currentTDU == 2)
+		{
+			TotalTDUCharges = 5.47 + (0.0403120 * kwh);
+		}
+
+		else if (currentTDU == 3)
+		{
+			TotalTDUCharges = 9.00 + (0.0448460 * kwh);
+		}
+
+		else if (currentTDU == 4)
+		{
+			TotalTDUCharges = 10.53 + (0.0401990 * kwh);
+		}
+
+		else
+		{
+			TotalTDUCharges = 7.85 + (0.0483210 * kwh);
+		}
+
+		cout << fixed << setprecision(2);
+		cout << "The Total amount of TDU Charges for month " << i << " are: " << TotalTDUCharges << endl;
+
+
+		double tier1Limit, tier2Limit, tier1cost, tier2cost, tier3cost;
+
+		double tier1Rate, tier2Rate, tier3Rate;
+
+		double tier1Usage, tier2Usage, tier3Usage;
+
+		tier1Rate = 7.30;
+		tier2Rate = 3.70;
+		tier3Rate = 7.70;
+
+		tier1Limit = 1200;
+		tier2Limit = 2000;
+
+
+		cout << fixed << setprecision(2);
+
+		
+
+		if (kwh <= tier1Limit)
+		{
+
+			tier1Usage = kwh;
+			tier2Usage = 0;
+			tier3Usage = 0;
+
+		}
+
+		else if (kwh <= tier2Limit)
+		{
+			tier1Usage = tier1Limit;
+			tier2Usage = kwh - tier1Limit;
+			tier3Usage = 0;
+		}
+		else {
+
+			tier1Usage = tier1Limit;
+			tier2Usage = tier2Limit - tier1Limit;
+			tier3Usage = kwh - tier2Limit;
+		}
+
+		tier1cost = tier1Usage * tier1Rate;
+		tier2cost = tier2Usage * tier2Rate;
+		tier3cost = tier3Usage * tier3Rate;
+
+
+
+		eflCost = (tier1cost + tier2cost + tier3cost) / 100 + 9.95;
+
+		if (kwh >= 1200)
+		{
+			eflCost = eflCost - 15.0;
+		}
+
+		cout << "The Total amount of EFL Charges for month " << i << " are: " << eflCost << endl;
+
+		double total;
+
+		total = eflCost + TotalTDUCharges;
+
+		cout << "The total combined charges for month " << i << " are : " << total << endl; 
+	
+	
+
+		double totalBill;
+
+		totalBill = eflCost + TotalTDUCharges;
+
+		cout << nameOnBill << "Your total charges for " << i << " months is :" << totalBill;
+
+}
+
+	
+}
